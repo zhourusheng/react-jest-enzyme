@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render current 1`] = `
+<div
+  className="todo-list"
+>
+  <div>
+    <span
+      className="item-text"
+    >
+      first
+    </span>
+    <button
+      className="ant-btn"
+      onClick={[Function]}
+      type="button"
+    />
+  </div>
+  <div>
+    <span
+      className="item-text"
+    >
+      secord
+    </span>
+    <button
+      className="ant-btn"
+      onClick={[Function]}
+      type="button"
+    />
+  </div>
+</div>
+`;

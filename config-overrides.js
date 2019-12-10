@@ -53,17 +53,23 @@ const devServerConfig = () => config => {
 module.exports = {
   webpack: override(
     fixBabelImports('import', {
-      libraryName: 'antd-mobile',
-      style: 'css'
+      libraryName: 'antd',
+      libraryDirectory: 'es',
+      style: true
     }),
-    addLessLoader(),
+    addLessLoader({
+      javascriptEnabled: true,
+      // modifyVars: { '@primary-color': '#1DA57A' },
+      // localIdentName: '[local]--[hash:base64:5]' // 自定义 CSS Modules 的 localIdentName
+    }),
     addPostcssPlugins([
       require('postcss-pxtorem')
       ({ 
-        rootValue: 75, 
-        propList: ['*'], 
-        minPixelValue: 2, 
-        selectorBlackList: ['am-'] 
+        rootValue: 16, // 根标签的 font-size 大小
+        unitPrecision: 5, // 转换成rem后的小数位数
+        propList: ['*'], // 需要转换的属性列表
+        minPixelValue: 2, // 设置小于多少尺寸将不会进行转换
+        selectorBlackList: [] // 选择器进行过滤的数组
       })
     ]),
     addCustomize()

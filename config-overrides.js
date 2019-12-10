@@ -3,10 +3,11 @@ const {
   overrideDevServer,
   addLessLoader,
   addPostcssPlugins,
-  fixBabelImports
+  fixBabelImports,
+  addWebpackAlias
 } = require('customize-cra')
-
-const CompressionWebpackPlugin = require('compression-webpack-plugin');
+const path = require('path')
+const CompressionWebpackPlugin = require('compression-webpack-plugin')
 
 /**
  * 添加配置、跨域设置、增加less支持、px转rem、ant-design按需加载、打包压缩js和css
@@ -52,6 +53,9 @@ const devServerConfig = () => config => {
 
 module.exports = {
   webpack: override(
+    addWebpackAlias({
+      '@': path.resolve(__dirname, 'src')
+    }),
     fixBabelImports('import', {
       libraryName: 'antd',
       libraryDirectory: 'es',

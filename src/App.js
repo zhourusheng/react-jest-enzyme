@@ -1,12 +1,14 @@
 import React from 'react'
 import './App.css'
 
-import ButtonItem from '@/components/ButtonItem'
+import Link from '@/components/link'
 
 function App() {
   return (
     <div className="App">
-      <ButtonItem name="哈哈哈name" />
+      <Link>
+        百度
+      </Link>
     </div>
   )
 }

@@ -53,7 +53,7 @@ const devServerConfig = () => config => {
 
 module.exports = {
   webpack: override(
-    addWebpackAlias({
+    addWebpackAlias({  // alias别名
       '@': path.resolve(__dirname, 'src')
     }),
     fixBabelImports('import', {

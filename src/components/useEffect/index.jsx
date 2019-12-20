@@ -2,27 +2,44 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 const Mock = require('mockjs')
 
-Mock.mock('https://www.test.com', {
+const url = 'https://www.test.com'
+
+Mock.setup({ timeout: 2000 })
+
+Mock.mock(RegExp(url + '.*'), {
   'hits|4': [
     {
       'objectID|+1': 1,
-      'title': '@ctitle',
-      'url': '@curl'
+      title: '@ctitle',
+      url: '@url(http)'
     }
   ]
 })
 
 function EffectPage() {
   const [data, setData] = useState({ hits: [] })
+  const [query, setQuery] = useState('')
+  const [search, setSearch] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [isError, setIsError] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await axios('https://www.test.com')
-      console.log(data)
-      setData(data)
+      if (!search) return
+      setIsLoading(true)
+      setIsError(false)
+      // 使用try catch捕获异常
+      try {
+        const { data } = await axios(`${url}/api/search?query=${search}`)
+        console.log(search, data)
+        setData(data)
+      } catch (error) {
+        setIsError(true)
+      }
+      setIsLoading(false)
     }
     fetchData()
-  }, [])
+  }, [search])
 
   /**
    * useEffect 第二个参数可以用于定义依赖的所有变量。如果期中一个变量发生变化，则useEffect会再次运行
@@ -30,13 +47,29 @@ function EffectPage() {
    * */
 
   return (
-    <ul>
-      {data.hits.map(item => (
-        <li key={item.objectID}>
-          <a href={item.url}>{item.title}</a>
-        </li>
-      ))}
-    </ul>
+    <>
+      <input
+        type='text'
+        name='query'
+        value={query}
+        onChange={event => setQuery(event.target.value)}
+      />
+      <button type='button' onClick={() => setSearch(query)} disabled={!query}>
+        search
+      </button>
+      {isError && <div>something is wrong...</div>}
+      {isLoading ? (
+        <div>loading...</div>
+      ) : (
+        <ul>
+          {data.hits.map(item => (
+            <li key={item.objectID}>
+              <a href={item.url}>{item.title}</a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </>
   )
 }
 
